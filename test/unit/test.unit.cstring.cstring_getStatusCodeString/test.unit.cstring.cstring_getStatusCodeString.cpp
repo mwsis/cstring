@@ -33,7 +33,9 @@
 
 /* STLSoft header files */
 #include <stlsoft/stlsoft.h>
-#include <comstl/memory/functions.h>
+#ifdef WIN32
+# include <comstl/memory/functions.h>
+#endif
 #include <platformstl/error/exceptions.hpp>
 #include <platformstl/filesystem/file_lines.hpp>
 #include <platformstl/system/system_traits.hpp>
@@ -114,8 +116,6 @@ int main(int argc, char **argv)
 
 namespace
 {
-
-    static char const alphabet[] = "abcdefghijklmnopqrstuvwxyz";
 
     static CSTRING_RC const knownCodes[] =
     {

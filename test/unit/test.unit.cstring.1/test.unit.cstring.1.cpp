@@ -33,7 +33,9 @@
 #include <xtests/xtests.h>
 
 /* STLSoft header files */
-#include <comstl/memory/functions.h>
+#ifdef WIN32
+# include <comstl/memory/functions.h>
+#endif
 #include <platformstl/error/exceptions.hpp>
 #include <platformstl/filesystem/file_lines.hpp>
 #include <platformstl/system/system_traits.hpp>
@@ -908,6 +910,7 @@ static void test_2_3()
     }}
 
 #ifdef WIN32
+
     { for (size_t i = 0; i != STLSOFT_NUM_ELEMENTS(alphabet) - 1; ++i)
     {
         cstring_t					str;
@@ -1041,6 +1044,7 @@ static void test_2_4()
     }}
 
 #ifdef WIN32
+
     { for (size_t i = 0; i != STLSOFT_NUM_ELEMENTS(alphabet) - 1; ++i)
     {
         cstring_t					str;
