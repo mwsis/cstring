@@ -1,7 +1,9 @@
 
 # directories (by name)
 
-_internal/
+/_build/
+
+/_internal/
 
 _UpgradeReport_Files/
 
