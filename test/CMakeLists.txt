@@ -1,12 +1,12 @@
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-if (APPLE)
+if(APPLE)
 
 	message("adding '/usr/local/include' to include-directories for 'test'")
 
 	include_directories("/usr/local/include")
-endif()
+endif(APPLE)
 
 
 # include_directories(${OPENBSD_LOCALBASE}/include)

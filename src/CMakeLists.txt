@@ -8,12 +8,12 @@ add_library(cstring
 	${CORE_SRCS}
 )
 
-if (APPLE)
+if(APPLE)
 
 	message("-- -- adding '/usr/local/include' to include-directories for 'src'")
 
 	include_directories("/usr/local/include")
-endif()
+endif(APPLE)
 
 if(UNIX)
 
