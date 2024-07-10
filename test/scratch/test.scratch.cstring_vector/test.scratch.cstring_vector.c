@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 /* *************************************************************************
  * main()
  */
@@ -62,7 +63,7 @@ int main(int argc, char* argv[])
                 {
                     int const e = errno;
 
-                    fprintf(stderr, "%s: could not open file '%s': \n", arg0, input_path, strerror(e));
+                    fprintf(stderr, "%s: could not open file '%s': %s\n", arg0, input_path, strerror(e));
 
                     return EXIT_FAILURE;
                 }
@@ -161,14 +162,7 @@ int run_(
 
         { size_t i; for (i = 0; i != csv.len; ++i)
         {
-            if (sizeof(int) == sizeof(size_t))
-            {
-                printf("line-%u: %.*s\n", (unsigned)i, csv.ptr[i]);
-            }
-            else
-            {
-                printf("line-%u: %.*s\n", (unsigned)i, (int)csv.ptr[i].len, csv.ptr[i].ptr);
-            }
+            printf("line-%u: %.*s\n", (unsigned)i, (int)csv.ptr[i].len, csv.ptr[i].ptr);
         }}
         printf("\n");
 
@@ -184,14 +178,7 @@ int run_(
 
         { size_t i; for (i = 0; i != csv.len; ++i)
         {
-            if (sizeof(int) == sizeof(size_t))
-            {
-                printf("line-%u: %.*s\n", (unsigned)i, csv.ptr[i]);
-            }
-            else
-            {
-                printf("line-%u: %.*s\n", (unsigned)i, (int)csv.ptr[i].len, csv.ptr[i].ptr);
-            }
+            printf("line-%u: %.*s\n", (unsigned)i, (int)csv.ptr[i].len, csv.ptr[i].ptr);
         }}
         printf("\n");
 
@@ -207,14 +194,7 @@ int run_(
 
         { size_t i; for (i = 0; i != csv.len; ++i)
         {
-            if (sizeof(int) == sizeof(size_t))
-            {
-                printf("line-%u: %.*s\n", (unsigned)i, csv.ptr[i]);
-            }
-            else
-            {
-                printf("line-%u: %.*s\n", (unsigned)i, (int)csv.ptr[i].len, csv.ptr[i].ptr);
-            }
+            printf("line-%u: %.*s\n", (unsigned)i, (int)csv.ptr[i].len, csv.ptr[i].ptr);
         }}
         printf("\n");
 
@@ -224,6 +204,7 @@ int run_(
         return EXIT_SUCCESS;
     }
 }
+
 
 /* ///////////////////////////// end of file //////////////////////////// */
 

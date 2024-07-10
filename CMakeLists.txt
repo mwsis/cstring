@@ -97,9 +97,15 @@ include(CTest)
 
 if(BUILD_TESTING)
 
+	set(STLSoft_REQUIRED_VERSION_ 1.11)
+
+	find_package(STLSoft ${STLSoft_REQUIRED_VERSION_} REQUIRED)
+
+	message("-- CMake package STLSoft found (version ${STLSoft_VERSION}; ${STLSoft_REQUIRED_VERSION_} requested)")
+
 	message("-- enabled building of tests ...")
 
-	set(xTests_REQUIRED_VERSION_ 0.21.2)
+	set(xTests_REQUIRED_VERSION_ 0.22)
 
 	find_package(xTests ${xTests_REQUIRED_VERSION_} REQUIRED)
 

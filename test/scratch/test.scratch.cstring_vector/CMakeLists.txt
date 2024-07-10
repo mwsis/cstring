@@ -18,6 +18,8 @@ target_compile_options(test_scratch_cstring_vector PRIVATE
 	>
 	$<$<CXX_COMPILER_ID:MSVC>:
 		/WX /W4
+
+		/wd4996
 	>
 )
 

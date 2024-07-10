@@ -16,6 +16,8 @@ target_compile_options(test_component_cstring_cstring_writeline PRIVATE
 	>
 	$<$<CXX_COMPILER_ID:MSVC>:
 		/WX /W4
+
+		/wd4996
 	>
 )
 

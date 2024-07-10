@@ -8,11 +8,16 @@
 /* Standard C header files */
 #include <stdio.h>
 
+
 /* /////////////////////////////////////////////////////////////////////////
  * forward declarations
  */
 
-/* ////////////////////////////////////////////////////////////////////// */
+
+/* /////////////////////////////////////////////////////////////////////////
+ * main()
+ */
+
 
 int main()
 {
@@ -27,8 +32,8 @@ int main()
     {
         printf(
             "successfully created string with length %lu capacity %lu and contents '%.*s'\n"
-        ,   cs.len
-        ,   cs.capacity
+        ,   (unsigned long)cs.len
+        ,   (unsigned long)cs.capacity
         ,   (int)cs.len, cs.ptr
         );
 
@@ -37,6 +42,7 @@ int main()
 
     return 0;
 }
+
 
 /* ///////////////////////////// end of file //////////////////////////// */
 
