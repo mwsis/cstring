@@ -23,7 +23,7 @@ while [[ $# -gt 0 ]]; do
 cstring is a small, standalone library, that provides extensible C-style string instances and extensible arrays of such
 Copyright (c) 2019-2024, Matthew Wilson and Synesis Information Systems
 Copyright (c) 1994-2019, Matthew Wilson and Synesis Software
-Runs all (matching) unit-test programs
+Runs all (matching) scratch-test programs
 
 $ScriptPath [ ... flags/options ... ]
 
@@ -87,21 +87,14 @@ fi
 
 if [ $status -eq 0 ]; then
 
-  for f in $(find $Dir -type f '(' -name 'test_unit*' -o -name 'test.unit.*' -o -name 'test_component*' -o -name 'test.component.*' ')' -exec test -x {} \; -print)
+  for f in $(find $Dir -type f '(' -name 'test_scratch*' -o -name 'test.scratch.*' -o -name 'test_performance*' -o -name 'test.performance.*' ')' -exec test -x {} \; -print)
   do
 
     echo
     echo "executing $f:"
 
-    if $f; then
-
-      :
-    else
-
-      status=$?
-
-      break 1
-    fi
+    # NOTE: we do not break on fail because these tests are not always intended to succeed
+    $f
   done
 fi
 
