@@ -113,7 +113,7 @@ jobs:
 
     - name: Install xTests
       run: |
-        ${{SUDO_CMAKE}} --install ${{env.XTESTS_DIR}}/build --config ${{matrix.build_type}}
+        ${{env.SUDO_CMAKE}} --install ${{env.XTESTS_DIR}}/build --config ${{matrix.build_type}}
 
     - name: Configure CMake for project
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
