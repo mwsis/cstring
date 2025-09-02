@@ -84,18 +84,19 @@ jobs:
       run: |
         cmake --version
 
-    - name: "Compiler version"
+    - name: "Compiler version (non-Windows)"
       run: |
         ${{matrix.c_compiler}} --version
-
-    - name: Setup directories
-      run: |
-        mkdir -p ${{env.SHARED_TMP_DIR}}
       if: runner.os != 'Windows'
-    - name: Setup directories
+
+    - name: "Setup directories (non-Windows)"
       run: |
         mkdir "${{env.SHARED_TMP_DIR}}"
       if: runner.os == 'Windows'
+    - name: "Setup directories (Windows)"
+      run: |
+        mkdir -p ${{env.SHARED_TMP_DIR}}
+      if: runner.os != 'Windows'
 
     - name: "STLSoft : Clone"
       run: |
@@ -107,7 +108,7 @@ jobs:
         echo "Obtaining xTests v${{env.XTESTS_TAG}} from ${{env.XTESTS_URL}} into ${{env.XTESTS_EXTRACT_DIR}} ..."
         git clone --depth 1 --branch ${{env.XTESTS_TAG}} ${{env.XTESTS_URL}} ${{env.XTESTS_EXTRACT_DIR}}
 
-    - name: Configure CMake for xTests
+    - name: "Configure CMake for xTests"
       run: >
         cmake
         -B ${{env.XTESTS_WORK_DIR}}
@@ -119,26 +120,21 @@ jobs:
         -DSTLSOFT=${{env.STLSOFT_EXTRACT_DIR}}
         -S ${{env.XTESTS_EXTRACT_DIR}}
 
-    - name: Build xTests
+    - name: "Build xTests"
       run: |
         cmake --build ${{env.XTESTS_WORK_DIR}} --config ${{matrix.build_type}}
-      if: runner.os != 'Windows'
 
-    # - name: List xTests build directory contents
-    #   run: ls -R ${{env.XTESTS_WORK_DIR}}
-    #   if: runner.os == 'Windows'
-
-    - name: Install xTests
+    - name: "Install xTests (non-Windows)"
       run: |
         sudo cmake --install ${{env.XTESTS_WORK_DIR}} --config ${{matrix.build_type}}
       if: runner.os != 'Windows'
-    - name: Install xTests
+    - name: "Install xTests (Windows)"
       # cmake --install "${{env.XTESTS_WORK_DIR}}" --config ${{matrix.build_type}}
       run: |
         cmake --build "${{env.XTESTS_WORK_DIR}}" --target install --config ${{matrix.build_type}}
       if: runner.os == 'Windows'
 
-    - name: Configure CMake for project
+    - name: "Configure CMake for project"
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: >
@@ -152,12 +148,12 @@ jobs:
         -DSTLSOFT=${{env.STLSOFT_EXTRACT_DIR}}
         -S ${{github.workspace}}
 
-    - name: Build project
+    - name: "Build project"
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       run: |
         cmake --build ${{steps.strings.outputs.build-output-dir}} --config ${{matrix.build_type}}
 
-    - name: Test project
+    - name: "Test project"
       working-directory: ${{steps.strings.outputs.build-output-dir}}
       # Execute tests defined by the CMake configuration. Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
