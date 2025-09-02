@@ -129,7 +129,7 @@ namespace
 
 static void test_createN()
 {
-    { for (size_t volatile i = 0; i != 1000000u; i = (0u == i) ? 1u : i * 10u)
+    { for (size_t i = 0; i != 1000000u; i = (0u == i) ? 1u : i * 10u)
     {
         cstring_t str;
 
