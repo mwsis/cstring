@@ -78,16 +78,18 @@ jobs:
       run: |
         echo "build-output-dir=${{github.workspace}}/build" >> "$GITHUB_OUTPUT"
 
+    - name: Set directories
+      run: |
+        mkdir -p ${{env.SHARED_TMP_DIR}}
+
     - name: "STLSoft : Clone"
       run: |
         echo "Obtaining STLSoft v${{env.STLSOFT_TAG}} from ${{env.STLSOFT_URL}} into ${{env.STLSOFT_DIR}} ..."
-        mkdir -p ${{env.SHARED_TMP_DIR}}
         git clone --depth 1 --branch ${{env.STLSOFT_TAG}} ${{env.STLSOFT_URL}} ${{env.STLSOFT_DIR}}
 
     - name: "xTests : Clone"
       run: |
         echo "Obtaining xTests v${{env.XTESTS_TAG}} from ${{env.XTESTS_URL}} into ${{env.XTESTS_DIR}} ..."
-        mkdir -p ${{env.SHARED_TMP_DIR}}
         git clone --depth 1 --branch ${{env.XTESTS_TAG}} ${{env.XTESTS_URL}} ${{env.XTESTS_DIR}}
 
     - name: Configure CMake
