@@ -78,9 +78,14 @@ jobs:
       run: |
         echo "build-output-dir=${{github.workspace}}/build" >> "$GITHUB_OUTPUT"
 
-    - name: Set directories
+    - name: Setup directories
       run: |
         mkdir -p ${{env.SHARED_TMP_DIR}}
+      if: runner.os != 'Windows'
+    - name: Setup directories
+      run: |
+        mkdir "${{env.SHARED_TMP_DIR}}"
+      if: runner.os == 'Windows'
 
     - name: "STLSoft : Clone"
       run: |
