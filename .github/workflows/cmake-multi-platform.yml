@@ -9,7 +9,6 @@ on:
     branches: [ "master", "dev", "gha" ]
 
 env:
-  SUDO_CMAKE: sudo cmake
   SHARED_TMP_DIR: /tmp/sis
   # NOTE: cannot extract to "/tmp/sis/stlsoft/STLSoft-1.11" as the Windows agent ignores the ".11" part
   STLSOFT_DIR: /tmp/sis/stlsoft
@@ -59,8 +58,6 @@ jobs:
           - os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
-            env:
-              SUDO_CMAKE: cmake
         exclude:
           - os: macos-latest
             c_compiler: cl
@@ -110,10 +107,16 @@ jobs:
     - name: Build xTests
       run: |
         cmake --build ${{env.XTESTS_DIR}}/build --config ${{matrix.build_type}}
+      if: runner.os != 'Windows'
 
     - name: Install xTests
       run: |
-        ${{env.SUDO_CMAKE}} --install ${{env.XTESTS_DIR}}/build --config ${{matrix.build_type}}
+        sudo cmake --install ${{env.XTESTS_DIR}}/build --config ${{matrix.build_type}}
+      if: runner.os != 'Windows'
+    - name: Install xTests
+      run: |
+        cmake --install ${{env.XTESTS_DIR}}/build --config ${{matrix.build_type}}
+      if: runner.os == 'Windows'
 
     - name: Configure CMake for project
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
