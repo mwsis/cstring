@@ -89,6 +89,10 @@ jobs:
         mkdir "${{env.SHARED_TMP_DIR}}"
       if: runner.os == 'Windows'
 
+    - name: "CMake version"
+      run: |
+        cmake --version
+
     - name: "STLSoft : Clone"
       run: |
         echo "Obtaining STLSoft v${{env.STLSOFT_TAG}} from ${{env.STLSOFT_URL}} into ${{env.STLSOFT_EXTRACT_DIR}} ..."
