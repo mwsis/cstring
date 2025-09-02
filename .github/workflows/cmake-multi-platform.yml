@@ -87,6 +87,7 @@ jobs:
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+        -DSTLSOFT=/tmp/sis/stlsoft/STLSoft_1_11
         -S ${{ github.workspace }}
 
     - name: Build
