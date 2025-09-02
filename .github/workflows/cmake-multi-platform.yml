@@ -9,11 +9,12 @@ on:
     branches: [ "master", "dev", "gha" ]
 
 env:
+  PROJECT_BUILD_SUBDIR: _build
   SHARED_TMP_DIR: /tmp/sis
   # NOTE: cannot extract to "/tmp/sis/stlsoft/STLSoft-1.11" as the Windows agent ignores the ".11" part
-  STLSOFT_DIR: /tmp/sis/stlsoft
-  XTESTS_DIR: /tmp/sis/xtests
-  BUILD_SUB_DIR: _build
+  STLSOFT_EXTRACT_DIR: /tmp/sis/clone/stlsoft
+  XTESTS_EXTRACT_DIR: /tmp/sis/clone/xtests
+  XTESTS_WORK_DIR: /tmp/sis/build/xtests
   STLSOFT_TAG: 1.11.1-rc3
   STLSOFT_URL: https://github.com/synesissoftware/STLSoft-1.11
   XTESTS_TAG: 0.26.4-alpha2
@@ -77,7 +78,7 @@ jobs:
       id: strings
       shell: bash
       run: |
-        echo "build-output-dir=${{github.workspace}}/${{env.BUILD_SUB_DIR}}" >> "$GITHUB_OUTPUT"
+        echo "build-output-dir=${{github.workspace}}/${{env.PROJECT_BUILD_SUBDIR}}" >> "$GITHUB_OUTPUT"
 
     - name: Setup directories
       run: |
@@ -90,42 +91,42 @@ jobs:
 
     - name: "STLSoft : Clone"
       run: |
-        echo "Obtaining STLSoft v${{env.STLSOFT_TAG}} from ${{env.STLSOFT_URL}} into ${{env.STLSOFT_DIR}} ..."
-        git clone --depth 1 --branch ${{env.STLSOFT_TAG}} ${{env.STLSOFT_URL}} ${{env.STLSOFT_DIR}}
+        echo "Obtaining STLSoft v${{env.STLSOFT_TAG}} from ${{env.STLSOFT_URL}} into ${{env.STLSOFT_EXTRACT_DIR}} ..."
+        git clone --depth 1 --branch ${{env.STLSOFT_TAG}} ${{env.STLSOFT_URL}} ${{env.STLSOFT_EXTRACT_DIR}}
 
     - name: "xTests : Clone"
       run: |
-        echo "Obtaining xTests v${{env.XTESTS_TAG}} from ${{env.XTESTS_URL}} into ${{env.XTESTS_DIR}} ..."
-        git clone --depth 1 --branch ${{env.XTESTS_TAG}} ${{env.XTESTS_URL}} ${{env.XTESTS_DIR}}
+        echo "Obtaining xTests v${{env.XTESTS_TAG}} from ${{env.XTESTS_URL}} into ${{env.XTESTS_EXTRACT_DIR}} ..."
+        git clone --depth 1 --branch ${{env.XTESTS_TAG}} ${{env.XTESTS_URL}} ${{env.XTESTS_EXTRACT_DIR}}
 
     - name: Configure CMake for xTests
       run: >
         cmake
-        -B ${{env.XTESTS_DIR}}/${{env.BUILD_SUB_DIR}}
+        -B ${{env.XTESTS_WORK_DIR}}
         -DBUILD_EXAMPLES:BOOL=FALSE
         -DBUILD_TESTING:BOOL=FALSE
         -DCMAKE_BUILD_TYPE=${{matrix.build_type}}
         -DCMAKE_CXX_COMPILER=${{matrix.cpp_compiler}}
         -DCMAKE_C_COMPILER=${{matrix.c_compiler}}
-        -DSTLSOFT=${{env.STLSOFT_DIR}}
-        -S ${{env.XTESTS_DIR}}
+        -DSTLSOFT=${{env.STLSOFT_EXTRACT_DIR}}
+        -S ${{env.XTESTS_EXTRACT_DIR}}
 
     - name: Build xTests
       run: |
-        cmake --build ${{env.XTESTS_DIR}}/${{env.BUILD_SUB_DIR}} --config ${{matrix.build_type}}
+        cmake --build ${{env.XTESTS_WORK_DIR}} --config ${{matrix.build_type}}
       if: runner.os != 'Windows'
 
     - name: List xTests build directory contents
-      run: ls -R ${{ github.workspace }}/${{env.BUILD_SUB_DIR}}
+      run: ls -R ${{env.XTESTS_WORK_DIR}}
       if: runner.os == 'Windows'
 
     - name: Install xTests
       run: |
-        sudo cmake --install ${{env.XTESTS_DIR}}/${{env.BUILD_SUB_DIR}} --config ${{matrix.build_type}}
+        sudo cmake --install ${{env.XTESTS_WORK_DIR}} --config ${{matrix.build_type}}
       if: runner.os != 'Windows'
     - name: Install xTests
       run: |
-        cmake --install "${{env.XTESTS_DIR}}/${{env.BUILD_SUB_DIR}}" --config ${{matrix.build_type}}
+        cmake --install "${{env.XTESTS_WORK_DIR}}" --config ${{matrix.build_type}}
       if: runner.os == 'Windows'
 
     - name: Configure CMake for project
@@ -139,7 +140,7 @@ jobs:
         -DCMAKE_BUILD_TYPE=${{matrix.build_type}}
         -DCMAKE_CXX_COMPILER=${{matrix.cpp_compiler}}
         -DCMAKE_C_COMPILER=${{matrix.c_compiler}}
-        -DSTLSOFT=${{env.STLSOFT_DIR}}
+        -DSTLSOFT=${{env.STLSOFT_EXTRACT_DIR}}
         -S ${{github.workspace}}
 
     - name: Build project
