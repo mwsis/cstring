@@ -9,7 +9,12 @@ on:
     branches: [ "master", "dev", "gha" ]
 
 env:
-  EV1: ev_1
+  STLSOFT_DIR: /tmp/sis/stlsoft
+  XTESTS_DIR: /tmp/sis/xtests
+  STLSOFT_TAG: 1.11.1-rc3
+  STLSOFT_URL: https://github.com/synesissoftware/STLSoft-1.11
+  XTESTS_TAG: 0.26.4-alpha2
+  TESTS_URL: https://github.com/synesissoftware/xTests
 
 jobs:
   build:
@@ -74,10 +79,9 @@ jobs:
     - name: Install STLSoft
       # NOTE: cannot extract to "/tmp/sis/stlsoft/STLSoft-1.11" as the Windows agent ignores the ".11" part
       run: |
-        echo "Obtaining latest STLSoft ..."
-        echo "EV1=${{env.EV1}}"
+        echo "Obtaining STLSoft v${{env.STLSOFT_TAG}} from ${{env.STLSOFT_URL}} into ${{env.STLSOFT_DIR}} ..."
         mkdir -p /tmp/sis/stlsoft
-        git clone https://github.com/synesissoftware/STLSoft-1.11 /tmp/sis/stlsoft/STLSoft_1_11
+        git clone --depth 1 --branch ${{env.STLSOFT_TAG}} ${{env.STLSOFT_URL}} ${{env.STLSOFT_DIR }}
         echo "Obtained latest STLSoft."
 
     - name: Configure CMake
