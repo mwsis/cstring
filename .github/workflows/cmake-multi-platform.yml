@@ -114,6 +114,10 @@ jobs:
         cmake --build ${{env.XTESTS_DIR}}/build --config ${{matrix.build_type}}
       if: runner.os != 'Windows'
 
+    - name: List xTests build directory contents
+      run: dir /s ${{env.XTESTS_DIR}}/build
+      if: runner.os == 'Windows'
+
     - name: Install xTests
       run: |
         sudo cmake --install ${{env.XTESTS_DIR}}/build --config ${{matrix.build_type}}
