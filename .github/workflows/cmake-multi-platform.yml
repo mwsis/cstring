@@ -8,6 +8,9 @@ on:
   pull_request:
     branches: [ "master", "dev", "gha" ]
 
+env:
+  EV1: ev_1
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -72,6 +75,7 @@ jobs:
       # NOTE: cannot extract to "/tmp/sis/stlsoft/STLSoft-1.11" as the Windows agent ignores the ".11" part
       run: |
         echo "Obtaining latest STLSoft ..."
+        echo "EV1=${{env.EV1}}"
         mkdir -p /tmp/sis/stlsoft
         git clone https://github.com/synesissoftware/STLSoft-1.11 /tmp/sis/stlsoft/STLSoft_1_11
         echo "Obtained latest STLSoft."
