@@ -120,9 +120,9 @@ jobs:
         cmake --build ${{env.XTESTS_WORK_DIR}} --config ${{matrix.build_type}}
       if: runner.os != 'Windows'
 
-    - name: List xTests build directory contents
-      run: ls -R ${{env.XTESTS_WORK_DIR}}
-      if: runner.os == 'Windows'
+    # - name: List xTests build directory contents
+    #   run: ls -R ${{env.XTESTS_WORK_DIR}}
+    #   if: runner.os == 'Windows'
 
     - name: Install xTests
       run: |
