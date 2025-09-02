@@ -120,7 +120,7 @@ jobs:
       if: runner.os != 'Windows'
     - name: Install xTests
       run: |
-        cmake --install ${{env.XTESTS_DIR}}/build --config ${{matrix.build_type}}
+        cmake --install "${{env.XTESTS_DIR}}/build" --config ${{matrix.build_type}}
       if: runner.os == 'Windows'
 
     - name: Configure CMake for project
