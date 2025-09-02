@@ -16,7 +16,7 @@ env:
   STLSOFT_TAG: 1.11.1-rc3
   STLSOFT_URL: https://github.com/synesissoftware/STLSoft-1.11
   XTESTS_TAG: 0.26.4-alpha2
-  TESTS_URL: https://github.com/synesissoftware/xTests
+  XTESTS_URL: https://github.com/synesissoftware/xTests
 
 jobs:
   build:
