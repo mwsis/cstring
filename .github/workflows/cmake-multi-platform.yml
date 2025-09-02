@@ -115,7 +115,7 @@ jobs:
       if: runner.os != 'Windows'
 
     - name: List xTests build directory contents
-      run: dir /s ${{env.XTESTS_DIR}}/build
+      run: ls -R ${{ github.workspace }}/build
       if: runner.os == 'Windows'
 
     - name: Install xTests
