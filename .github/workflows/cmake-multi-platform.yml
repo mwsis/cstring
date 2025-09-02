@@ -13,6 +13,7 @@ env:
   # NOTE: cannot extract to "/tmp/sis/stlsoft/STLSoft-1.11" as the Windows agent ignores the ".11" part
   STLSOFT_DIR: /tmp/sis/stlsoft
   XTESTS_DIR: /tmp/sis/xtests
+  BUILD_SUB_DIR: _build
   STLSOFT_TAG: 1.11.1-rc3
   STLSOFT_URL: https://github.com/synesissoftware/STLSoft-1.11
   XTESTS_TAG: 0.26.4-alpha2
@@ -76,7 +77,7 @@ jobs:
       id: strings
       shell: bash
       run: |
-        echo "build-output-dir=${{github.workspace}}/build" >> "$GITHUB_OUTPUT"
+        echo "build-output-dir=${{github.workspace}}/${{BUILD_SUB_DIR}}" >> "$GITHUB_OUTPUT"
 
     - name: Setup directories
       run: |
@@ -100,7 +101,7 @@ jobs:
     - name: Configure CMake for xTests
       run: >
         cmake
-        -B ${{env.XTESTS_DIR}}/build
+        -B ${{env.XTESTS_DIR}}/${{BUILD_SUB_DIR}}
         -DBUILD_EXAMPLES:BOOL=FALSE
         -DBUILD_TESTING:BOOL=FALSE
         -DCMAKE_BUILD_TYPE=${{matrix.build_type}}
@@ -111,20 +112,20 @@ jobs:
 
     - name: Build xTests
       run: |
-        cmake --build ${{env.XTESTS_DIR}}/build --config ${{matrix.build_type}}
+        cmake --build ${{env.XTESTS_DIR}}/${{BUILD_SUB_DIR}} --config ${{matrix.build_type}}
       if: runner.os != 'Windows'
 
     - name: List xTests build directory contents
-      run: ls -R ${{ github.workspace }}/build
+      run: ls -R ${{ github.workspace }}/${{BUILD_SUB_DIR}}
       if: runner.os == 'Windows'
 
     - name: Install xTests
       run: |
-        sudo cmake --install ${{env.XTESTS_DIR}}/build --config ${{matrix.build_type}}
+        sudo cmake --install ${{env.XTESTS_DIR}}/${{BUILD_SUB_DIR}} --config ${{matrix.build_type}}
       if: runner.os != 'Windows'
     - name: Install xTests
       run: |
-        cmake --install "${{env.XTESTS_DIR}}/build" --config ${{matrix.build_type}}
+        cmake --install "${{env.XTESTS_DIR}}/${{BUILD_SUB_DIR}}" --config ${{matrix.build_type}}
       if: runner.os == 'Windows'
 
     - name: Configure CMake for project
