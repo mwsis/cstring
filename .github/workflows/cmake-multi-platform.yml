@@ -92,7 +92,7 @@ jobs:
         echo "Obtaining xTests v${{env.XTESTS_TAG}} from ${{env.XTESTS_URL}} into ${{env.XTESTS_DIR}} ..."
         git clone --depth 1 --branch ${{env.XTESTS_TAG}} ${{env.XTESTS_URL}} ${{env.XTESTS_DIR}}
 
-    - name: Configure CMake
+    - name: Configure CMake for project
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: >
@@ -106,11 +106,11 @@ jobs:
         -DSTLSOFT=${{env.STLSOFT_DIR}}
         -S ${{github.workspace}}
 
-    - name: Build
+    - name: Build project
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       run: cmake --build ${{steps.strings.outputs.build-output-dir}} --config ${{matrix.build_type}}
 
-    - name: Test
+    - name: Test project
       working-directory: ${{steps.strings.outputs.build-output-dir}}
       # Execute tests defined by the CMake configuration. Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
