@@ -80,6 +80,14 @@ jobs:
       run: |
         echo "build-output-dir=${{github.workspace}}/${{env.PROJECT_BUILD_SUBDIR}}" >> "$GITHUB_OUTPUT"
 
+    - name: "CMake version"
+      run: |
+        cmake --version
+
+    - name: "Compiler version"
+      run: |
+        ${{matrix.c_compiler}} --version
+
     - name: Setup directories
       run: |
         mkdir -p ${{env.SHARED_TMP_DIR}}
@@ -88,10 +96,6 @@ jobs:
       run: |
         mkdir "${{env.SHARED_TMP_DIR}}"
       if: runner.os == 'Windows'
-
-    - name: "CMake version"
-      run: |
-        cmake --version
 
     - name: "STLSoft : Clone"
       run: |
