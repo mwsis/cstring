@@ -91,12 +91,12 @@ jobs:
 
     - name: "Setup directories (non-Windows)"
       run: |
-        mkdir "${{env.SHARED_TMP_DIR}}"
-      if: runner.os == 'Windows'
-    - name: "Setup directories (Windows)"
-      run: |
         mkdir -p ${{env.SHARED_TMP_DIR}}
       if: runner.os != 'Windows'
+    - name: "Setup directories (Windows)"
+      run: |
+        mkdir "${{env.SHARED_TMP_DIR}}"
+      if: runner.os == 'Windows'
 
     - name: "STLSoft : Clone"
       run: |
